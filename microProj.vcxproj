@@ -22,6 +22,7 @@
     <PropertyGroup>
       <WindowsWinMD>C:\Windows\System32\WinMetadata</WindowsWinMD>
     </PropertyGroup>
+    <Error Text="You need to specify the idl file name in the IDLFile property" Condition="'$(IDLFile)'==''" />
 
     <MakeDir Directories="@(DirectoriesToMake)" />
 
@@ -142,7 +143,10 @@
 
     <Message Text="DELETING FILES: @(FilesToDelete)" Importance="High"/>
     <Delete Files="@(FilesToDelete)" />
-    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\MainPage.winmd  -output CppWinRTGenerated -component CppWinRTGenerated\sources -reference sdk" />
+    <PropertyGroup>
+      <WinMDFileName>$([System.IO.Path]::GetFileNameWithoutExtension('$(IDLFile)')).winmd</WinMDFileName>
+    </PropertyGroup>
+    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\$(WinMDFileName)  -output CppWinRTGenerated -component CppWinRTGenerated\sources -reference sdk" />
 
   </Target>
 
