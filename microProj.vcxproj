@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License. See LICENSE in the project root for license information. -->
 <Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-<PropertyGroup>
-  <OutDir>VSIX_Metadata_Folder\</OutDir>
-  <IntDir>VSIX_Metadata_Folder\</IntDir>
-</PropertyGroup>
 
-  <Import Project="ReproCppWinRTApp.vcxproj" />
+  <Target Name="SelectMidl">
+    <Error Text="The project '$(ProjectPath)' is not valid" />
+  </Target>
+
+  <Import Project="$(ProjectPath)" Condition="Exists('$(ProjectPath)')" />
+
+  <PropertyGroup>
+    <OutDir>$(TEMP)\VSIXIDL\$(ProjectName)\VSIX_Metadata_Folder\</OutDir>
+    <IntDir>$(OutDir)</IntDir>
+  </PropertyGroup>
 
   <Target Name="SpecialVSIXMidl"
-          Condition="'@(Midl)' != ''"
           DependsOnTargets="SelectMidl">
 
     <ItemGroup>
-      <DirectoriesToMake Include="VSIX_Metadata_Folder" />
-      <DirectoriesToMake Include="VSIX_Metadata_Folder\Unmerged" />
-      <FilesToDelete Include="Generated Files\**" />
+      <DirectoriesToMake Include="$(OutDir)" />
+      <DirectoriesToMake Include="$(OutDir)\Unmerged" />
+      <FilesToDelete Include="$(OutDir)\Generated Files\**" />
     </ItemGroup>
 
-    <PropertyGroup>
-      <WindowsWinMD>C:\Windows\System32\WinMetadata</WindowsWinMD>
-    </PropertyGroup>
+    <Error Text="You need to specify the path to the vcxproj in the ProjectPath property" Condition="'$(ProjectPath)'==''" />
     <Error Text="You need to specify the idl file name in the IDLFile property" Condition="'$(IDLFile)'==''" />
+
+    <Message Text="Using OutDir=$(OutDir)" Importance="High" />
 
     <MakeDir Directories="@(DirectoriesToMake)" />
 
@@ -104,7 +108,7 @@
       MkTypLibCompatible                  ="%(Midl.MkTypLibCompatible)"
       MetadataFileName                    ="%(Midl.MetadataFileName)"
       MinimumTargetSystem                 ="%(Midl.MinimumTargetSystem)"
-      OutputDirectory                     ="VSIX_Metadata_Folder"
+      OutputDirectory                     ="$(OutDir)"
       PrependWithABINamepsace             ="%(Midl.PrependWithABINamepsace)"
       PreprocessorDefinitions             ="%(Midl.PreprocessorDefinitions)"
       ProxyFileName                       ="%(Midl.ProxyFileName)"
@@ -145,7 +149,7 @@
     <PropertyGroup>
       <WinMDFileName>$([System.IO.Path]::GetFileNameWithoutExtension('$(IDLFile)')).winmd</WinMDFileName>
     </PropertyGroup>
-    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\$(WinMDFileName)  -output &quot;Generated Files&quot; -component &quot;Generated Files&quot;\sources -reference sdk" />
+    <Exec Command="$(CppWinRTPath)cppwinrt -input $(OutDir)\unmerged\$(WinMDFileName)  -output &quot;$(OutDir)\Generated Files&quot; -component &quot;$(OutDir)\Generated Files&quot;\sources -reference sdk" />
 
   </Target>
 
