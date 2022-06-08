@@ -15,8 +15,7 @@
     <ItemGroup>
       <DirectoriesToMake Include="VSIX_Metadata_Folder" />
       <DirectoriesToMake Include="VSIX_Metadata_Folder\Unmerged" />
-      <DirectoriesToMake Include="VSIX_OUTPUT_DIR_GOES_HERE" />
-      <FilesToDelete Include="CppWinRTGenerated\**" />
+      <FilesToDelete Include="Generated Files\**" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -105,7 +104,7 @@
       MkTypLibCompatible                  ="%(Midl.MkTypLibCompatible)"
       MetadataFileName                    ="%(Midl.MetadataFileName)"
       MinimumTargetSystem                 ="%(Midl.MinimumTargetSystem)"
-      OutputDirectory                     ="VSIX_OUTPUT_DIR_GOES_HERE"
+      OutputDirectory                     ="VSIX_Metadata_Folder"
       PrependWithABINamepsace             ="%(Midl.PrependWithABINamepsace)"
       PreprocessorDefinitions             ="%(Midl.PreprocessorDefinitions)"
       ProxyFileName                       ="%(Midl.ProxyFileName)"
@@ -146,7 +145,7 @@
     <PropertyGroup>
       <WinMDFileName>$([System.IO.Path]::GetFileNameWithoutExtension('$(IDLFile)')).winmd</WinMDFileName>
     </PropertyGroup>
-    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\$(WinMDFileName)  -output CppWinRTGenerated -component CppWinRTGenerated\sources -reference sdk" />
+    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\$(WinMDFileName)  -output &quot;Generated Files&quot; -component &quot;Generated Files&quot;\sources -reference sdk" />
 
   </Target>
 
