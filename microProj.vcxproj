@@ -16,6 +16,7 @@
       <DirectoriesToMake Include="VSIX_Metadata_Folder" />
       <DirectoriesToMake Include="VSIX_Metadata_Folder\Unmerged" />
       <DirectoriesToMake Include="VSIX_OUTPUT_DIR_GOES_HERE" />
+      <FilesToDelete Include="CppWinRTGenerated\**" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -139,6 +140,8 @@
       >
     </MIDL>
 
+    <Message Text="DELETING FILES: @(FilesToDelete)" Importance="High"/>
+    <Delete Files="@(FilesToDelete)" />
     <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\MainPage.winmd  -output CppWinRTGenerated -component CppWinRTGenerated\sources -reference sdk" />
 
   </Target>
