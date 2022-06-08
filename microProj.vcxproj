@@ -139,7 +139,7 @@
       >
     </MIDL>
 
-    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\MainPage.winmd  -output CppWinRTGenerated -component sources -reference sdk" />
+    <Exec Command="$(CppWinRTPath)cppwinrt -input VSIX_Metadata_Folder\unmerged\MainPage.winmd  -output CppWinRTGenerated -component CppWinRTGenerated\sources -reference sdk" />
 
   </Target>
 
