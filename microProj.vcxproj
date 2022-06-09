@@ -115,7 +115,7 @@
       RedirectOutputAndErrors             ="%(Midl.RedirectOutputAndErrors)"
       ServerStubFile                      ="%(Midl.ServerStubFile)"
       StructMemberAlignment               ="%(Midl.StructMemberAlignment)"
-      SuppressCompilerWarnings            ="%(Midl.SuppressCompilerWarnings)"
+      SuppressCompilerWarnings            ="%(Midl.SuppressCompilerWarnings)" 
       SuppressStartupBanner               ="%(Midl.SuppressStartupBanner)"
       TargetEnvironment                   ="%(Midl.TargetEnvironment)"
       TypeLibFormat                       ="%(Midl.TypeLibFormat)"
@@ -149,7 +149,7 @@
     <PropertyGroup>
       <WinMDFileName>$([System.IO.Path]::GetFileNameWithoutExtension('$(IDLFile)')).winmd</WinMDFileName>
     </PropertyGroup>
-    <Exec Command="$(CppWinRTPath)cppwinrt -input $(OutDir)\unmerged\$(WinMDFileName)  -output &quot;$(OutDir)\Generated Files&quot; -component &quot;$(OutDir)\Generated Files&quot;\sources -reference sdk" />
+    <Exec Command="$(CppWinRTPath)cppwinrt -overwrite -name $(ProjectName) -prefix -comp &quot;$(OutDir)\Generated Files&quot;\sources -opt -in $(OutDir)\unmerged\$(WinMDFileName) -reference sdk -output &quot;$(OutDir)\Generated Files&quot; -verbose " />
 
   </Target>
 
